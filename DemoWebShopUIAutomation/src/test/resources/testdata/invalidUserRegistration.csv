@@ -1,0 +1,6 @@
+gender,firstName,lastName,email,password,expectedErrorMessage
+male,,James,james.takez@test.com,tricentis999,First name is required.
+female,Jana,,jana.lein@test.com,tricentis888,Last name is required.
+male,Richard,Lain,,tricentis777,Email is required.
+female,Emily,Haidi,haidi@test.com,,Password is required.
+male,Michael,Sanyi,michael_sanyi,tricentis666,Wrong email

@@ -1,0 +1,26 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="DemoWebShop Suite">
+
+    <test name="Login Tests">
+        <groups>
+            <run>
+                <include name="ErrorValidationTests"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.wilsonmanaog.automation.tests.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Register User Tests">
+        <groups>
+            <run>
+                <include name="ErrorValidationTests"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.wilsonmanaog.automation.tests.RegisterUserTest"/>
+        </classes>
+    </test>
+
+</suite>

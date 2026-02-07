@@ -1,0 +1,46 @@
+package com.wilsonmanaog.automation.tests;
+
+import com.wilsonmanaog.automation.base.BaseTest;
+import com.wilsonmanaog.automation.config.DataSource;
+import com.wilsonmanaog.automation.model.User;
+import com.wilsonmanaog.automation.pages.LoginPage;
+import com.wilsonmanaog.automation.utils.GenericDataProvider;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.Map;
+
+public class LoginTest extends BaseTest {
+
+    @Test(groups = {"SmokeTests"}, dataProvider = "csvData", dataProviderClass = GenericDataProvider.class)
+    @DataSource("validUserLogin.csv")
+    public void validLoginTest(Map<String, String> data) {
+        //Go to Login Page
+        LoginPage loginPage = homePage.getHeader().goToLoginPage();
+        loginPage.waitForPageToLoad();
+
+        //Perform Login
+        User user = new User(data.get("email"), data.get("password"));
+        loginPage.login(user.getEmail(), user.getPassword());
+
+        //Verify Login Successful
+        Assert.assertTrue(homePage.getHeader().isLoginSuccessful(user.getEmail()),
+                "Login was not successful for user: " + user.getEmail());
+    }
+
+    @Test(groups = {"ErrorValidationTests"}, dataProvider = "csvData", dataProviderClass = GenericDataProvider.class)
+    @DataSource("invalidUserLogin.csv")
+    public void invalidLoginTest(Map<String, String> data) {
+        //Go to Login Page
+        LoginPage loginPage = homePage.getHeader().goToLoginPage();
+        loginPage.waitForPageToLoad();
+
+        //Perform Login
+        User user = new User(data.get("email"), data.get("password"));
+        loginPage.login(user.getEmail(), user.getPassword());
+
+        //Verify Login Error Message
+        Assert.assertTrue(loginPage.isLoginErrorMessageDisplayed(),
+                "Expected login error message was not displayed for user: " + user.getEmail());
+    }
+}
