@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class LoginTest extends BaseTest {
 
-    @Test(groups = {"SmokeTests"}, dataProvider = "csvData", dataProviderClass = GenericDataProvider.class)
+    @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
     @DataSource("validUserLogin.csv")
     public void validLoginTest(Map<String, String> data) {
         //Go to Login Page
@@ -28,7 +28,7 @@ public class LoginTest extends BaseTest {
                 "Login was not successful for user: " + user.getEmail());
     }
 
-    @Test(groups = {"ErrorValidationTests"}, dataProvider = "csvData", dataProviderClass = GenericDataProvider.class)
+    @Test(groups = {"ErrorValidationTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
     @DataSource("invalidUserLogin.csv")
     public void invalidLoginTest(Map<String, String> data) {
         //Go to Login Page

@@ -14,8 +14,8 @@ public class CSVUtils {
         // prevent instantiation
     }
 
-    public static List<Map<String, String>> readCsv(String resourcePath) {
-        List<Map<String, String>> data = new ArrayList<>();
+    public static Object[][] readCsv(String resourcePath) {
+        List<Map<String, String>> rows = new ArrayList<>();
 
         try {
             InputStream is = CSVUtils.class
@@ -37,10 +37,15 @@ public class CSVUtils {
                 for (int i = 0; i < headers.length; i++) {
                     row.put(headers[i].trim(), values[i].trim());
                 }
-                data.add(row);
+                rows.add(row);
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to read CSV: " + resourcePath, e);
+        }
+
+        Object[][] data = new Object[rows.size()][1];
+        for (int i = 0; i < rows.size(); i++) {
+            data[i][0] = rows.get(i);
         }
         return data;
     }

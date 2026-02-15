@@ -1,6 +1,6 @@
 package com.wilsonmanaog.automation.model;
 
-public enum ItemCategory {
+public enum ProductCategory {
 
     BOOKS("Books"),
     COMPUTERS("Computers"),
@@ -12,7 +12,7 @@ public enum ItemCategory {
 
     private final String displayName;
 
-    ItemCategory(String displayName) {
+    ProductCategory(String displayName) {
         this.displayName = displayName;
     }
 

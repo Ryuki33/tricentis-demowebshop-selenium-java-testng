@@ -1,0 +1,57 @@
+[
+  {
+    "searchKeyword": "jeans",
+    "expectedProducts": [
+      {
+        "name": "Blue Jeans",
+        "price": "1.00",
+        "quantity": "1"
+      },
+      {
+        "name": "TBlue Jeans",
+        "price": "1.00",
+        "quantity": "1"
+      }
+      ]
+  },
+  {
+    "searchKeyword": "internet",
+    "expectedProducts": [
+      {
+        "name": "Computing and Internet",
+        "price": "10.00",
+        "quantity": "1"
+      },
+      {
+        "name": "Copy of Computing and Internet EX",
+        "price": "10.00",
+        "quantity": "1"
+      }
+    ]
+  },
+    {
+        "searchKeyword": "gift card",
+        "expectedProducts": [
+        {
+            "name": "$100 Physical Gift Card",
+            "price": "100.00",
+            "quantity": "1"
+        },
+        {
+            "name": "$25 Virtual Gift Card",
+            "price": "25.00",
+            "quantity": "1"
+        },
+        {
+            "name": "$5 Virtual Gift Card",
+            "price": "5.00",
+            "quantity": "1"
+        },
+        {
+            "name": "$50 Physical Gift Card",
+            "price": "50.00",
+            "quantity": "1"
+        }
+        ]
+    }
+]

@@ -12,6 +12,12 @@ public class HomePage extends BasePage {
     @FindBy(css="div.header-logo")
     WebElement homepageLogo;
 
+    @FindBy(css="input#small-searchterms")
+    WebElement searchTextBox;
+
+    @FindBy(css="input.search-box-button")
+    WebElement searchButton;
+
     private final String url;
 
     public HomePage(WebDriver driver) {
@@ -23,5 +29,11 @@ public class HomePage extends BasePage {
     public void open() {
         driver.get(url);
         waitElementToBeVisible(homepageLogo);
+    }
+
+    public SearchProductsPage searchForProduct(String productName) {
+        typeText(searchTextBox, productName);
+        click(searchButton);
+        return new SearchProductsPage(driver);
     }
 }

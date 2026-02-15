@@ -1,0 +1,14 @@
+[
+  {
+    "searchKeyword": "playstation",
+    "expectedProducts": []
+  },
+  {
+    "searchKeyword": "arduino",
+    "expectedProducts": []
+  },
+  {
+    "searchKeyword": "nintendo switch",
+    "expectedProducts": []
+  }
+]

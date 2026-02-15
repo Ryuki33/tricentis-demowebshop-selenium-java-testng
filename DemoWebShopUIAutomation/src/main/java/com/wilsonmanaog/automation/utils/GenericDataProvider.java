@@ -2,17 +2,15 @@ package com.wilsonmanaog.automation.utils;
 
 import com.wilsonmanaog.automation.config.DataSource;
 import org.testng.annotations.DataProvider;
-
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
 
 public class GenericDataProvider {
 
-    @DataProvider(name = "csvData")
-    public static Object[][] provideCsvData(Method testMethod) {
+    @DataProvider(name = "dataProvider")
+    public static Object[][] provideData(Method testMethod) {
 
         DataSource dataSource = testMethod.getAnnotation(DataSource.class);
+        TestDataReader testDataReader;
 
         if (dataSource == null) {
             throw new RuntimeException(
@@ -20,14 +18,16 @@ public class GenericDataProvider {
             );
         }
 
-        List<Map<String, String>> rows =
-                CSVUtils.readCsv("testdata/"+ dataSource.value());
-
-        Object[][] data = new Object[rows.size()][1];
-        for (int i = 0; i < rows.size(); i++) {
-            data[i][0] = rows.get(i);
+        if (dataSource.value().endsWith(".csv")) {
+            testDataReader = new CsvDataReader();
+            return testDataReader.read("testdata/"+ dataSource.value());
+        } else if (dataSource.value().endsWith(".json")) {
+            testDataReader = new JsonDataReader();
+            return testDataReader.read("testdata/"+ dataSource.value());
+        } else {
+            throw new RuntimeException(
+                    "Unsupported data source format: " + dataSource.value()
+            );
         }
-
-        return data;
     }
 }

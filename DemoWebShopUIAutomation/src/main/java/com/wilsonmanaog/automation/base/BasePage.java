@@ -1,7 +1,7 @@
 package com.wilsonmanaog.automation.base;
 
 import com.wilsonmanaog.automation.components.HeaderMenuSection;
-import com.wilsonmanaog.automation.components.ItemCategoriesSection;
+import com.wilsonmanaog.automation.components.ProductCategoriesSection;
 import com.wilsonmanaog.automation.utils.ElementActions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,13 +11,13 @@ public abstract class BasePage {
     protected WebDriver driver;
     protected ElementActions actions;
     protected HeaderMenuSection header;
-    protected ItemCategoriesSection categories;
+    protected ProductCategoriesSection categories;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.actions = new ElementActions(driver);
         this.header = new HeaderMenuSection(driver);
-        this.categories = new ItemCategoriesSection(driver);
+        this.categories = new ProductCategoriesSection(driver);
     }
 
     public void click(WebElement element) {
@@ -36,7 +36,7 @@ public abstract class BasePage {
         return header;
     }
 
-    public ItemCategoriesSection getCategories() {
+    public ProductCategoriesSection getCategories() {
         return categories;
     }
 }
