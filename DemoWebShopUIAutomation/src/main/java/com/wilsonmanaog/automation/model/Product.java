@@ -2,11 +2,13 @@ package com.wilsonmanaog.automation.model;
 
 public class Product {
     private final String name;
-    private final String price;
-    private final String quantity;
+    private final String category;
+    private final double price;
+    private final int quantity;
 
-    public Product(String name, String price, String quantity) {
+    public Product(String name, String category,double price, int quantity) {
         this.name = name;
+        this.category = category;
         this.price = price;
         this.quantity = quantity;
     }
@@ -15,11 +17,15 @@ public class Product {
         return name;
     }
 
-    public String getPrice() {
+    public String getCategory() {
+        return category;
+    }
+
+    public double getPrice() {
         return price;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 }

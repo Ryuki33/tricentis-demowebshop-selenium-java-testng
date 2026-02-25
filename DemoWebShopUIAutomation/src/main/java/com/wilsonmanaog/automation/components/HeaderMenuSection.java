@@ -3,6 +3,7 @@ package com.wilsonmanaog.automation.components;
 import com.wilsonmanaog.automation.base.BaseComponent;
 import com.wilsonmanaog.automation.pages.LoginPage;
 import com.wilsonmanaog.automation.pages.RegisterUserPage;
+import com.wilsonmanaog.automation.pages.ShoppingCartPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,6 +42,11 @@ public class HeaderMenuSection extends BaseComponent {
     public RegisterUserPage goToRegisterPage() {
         click(registerLink);
         return new RegisterUserPage(driver);
+    }
+
+    public ShoppingCartPage goToShoppingCartPage() {
+        click(shoppingCartLink);
+        return new ShoppingCartPage(driver);
     }
 
     public boolean isLoginSuccessful(String userName) {

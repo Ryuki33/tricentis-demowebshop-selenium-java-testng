@@ -12,7 +12,7 @@ public class ElementActions {
     private final WebDriverWait wait;
 
     public ElementActions(WebDriver driver) {
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
     public void waitElementToBeVisible(WebElement element) {

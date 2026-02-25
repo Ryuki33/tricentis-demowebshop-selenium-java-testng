@@ -39,7 +39,7 @@ public class RegisterUserTest extends BaseTest {
         UserRegistration userRegistration = new UserRegistration(data.get("gender"), data.get("firstName"), data.get("lastName"), data.get("email"), data.get("password"));
         registerUserPage.registerUser(userRegistration.getGender(), userRegistration.getFirstName(), userRegistration.getLastName(), userRegistration.getEmail(), userRegistration.getPassword());
 
-        //Verify Registration Successful
+        //Verify Registration Error Message Displayed
         Assert.assertTrue(registerUserPage.isRegistrationErrorMessageDisplayed(data.get("expectedErrorMessage")),
                 "Expected registration error message was not displayed: " + data.get("expectedErrorMessage"));
     }

@@ -14,11 +14,11 @@ public class ProductMapper {
     public static List<Product> fromJson(Map<String, Object> data) {
 
         List<Product> products = new ArrayList<>();
-        List<Map<String, String>> expectedProducts =
-                (List<Map<String, String>>) data.get("expectedProducts");
+        List<Map<String, Object>> expectedProducts =
+                (List<Map<String, Object>>) data.get("products");
 
-        for (Map<String, String> p : expectedProducts) {
-            products.add(new Product(p.get("name"), p.get("price"), p.get("quantity")));
+        for (Map<String, Object> p : expectedProducts) {
+            products.add(new Product((String) p.get("name"), (String) p.get("category"), (Double) p.get("price"), (Integer) p.get("quantity")));
         }
 
         return products;

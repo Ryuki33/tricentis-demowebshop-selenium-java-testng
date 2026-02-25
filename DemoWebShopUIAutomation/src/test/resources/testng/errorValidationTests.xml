@@ -23,4 +23,15 @@
         </classes>
     </test>
 
+    <test name="Search Product Tests">
+        <groups>
+            <run>
+                <include name="ErrorValidationTests"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.wilsonmanaog.automation.tests.SearchProductTest"/>
+        </classes>
+    </test>
+
 </suite>

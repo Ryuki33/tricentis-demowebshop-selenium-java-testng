@@ -34,4 +34,15 @@
         </classes>
     </test>
 
+    <test name="Add Product to Cart Tests">
+        <groups>
+            <run>
+                <include name="SmokeTests"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.wilsonmanaog.automation.tests.AddProductToCartTest"/>
+        </classes>
+    </test>
+
 </suite>

@@ -1,0 +1,40 @@
+[
+  {
+    "products": [
+      {
+        "name": "Blue Jeans",
+        "category": "APPAREL_AND_SHOES",
+        "price": 1.00,
+        "quantity": 3
+      },
+      {
+        "name": "Computing and Internet",
+        "category": "BOOKS",
+        "price": 10.00,
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "products": [
+      {
+        "name": "Blue and green Sneaker",
+        "category": "APPAREL_AND_SHOES",
+        "price": 11.00,
+        "quantity": 1
+      },
+      {
+        "name": "Black & White Diamond Heart",
+        "category": "JEWELRY",
+        "price": 130.00,
+        "quantity": 5
+      },
+      {
+        "name": "3rd Album",
+        "category": "DIGITAL_DOWNLOADS",
+        "price": 1.00,
+        "quantity": 2
+      }
+    ]
+  }
+]

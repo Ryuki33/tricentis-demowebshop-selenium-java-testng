@@ -35,7 +35,7 @@ public class SearchProductTest extends BaseTest {
         SearchProductsPage searchProductsPage = homePage.searchForProduct((String) data.get("searchKeyword"));
         searchProductsPage.waitForPageToLoad();
 
-        //Verify Product Search Results
+        //Verify No Products Message Displayed
         Assert.assertTrue(searchProductsPage.isNoProductsMessageDisplayed(),
                 "No products message was not displayed for search keyword: " + data.get("searchKeyword"));;
     }

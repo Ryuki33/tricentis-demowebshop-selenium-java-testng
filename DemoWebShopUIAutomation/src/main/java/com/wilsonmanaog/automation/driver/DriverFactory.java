@@ -18,6 +18,7 @@ public class DriverFactory {
 
         if (browserName.contains("chrome")) {
             ChromeOptions options = new ChromeOptions();
+            options.setAcceptInsecureCerts(true);
             WebDriverManager.chromedriver().setup();
             if (browserName.contains("headless")) {
                 options.addArguments("headless");

@@ -7,7 +7,6 @@ import com.wilsonmanaog.automation.pages.LoginPage;
 import com.wilsonmanaog.automation.utils.GenericDataProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.Map;
 
 public class LoginTest extends BaseTest {
