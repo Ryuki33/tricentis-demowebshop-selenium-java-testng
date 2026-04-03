@@ -3,6 +3,7 @@ package com.wilsonmanaog.automation.utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -32,5 +33,11 @@ public class ElementActions {
         waitElementToBeVisible(element);
         element.clear();
         element.sendKeys(text);
+    }
+
+    public void selectOptionByVisibleText(WebElement element, String text) {
+        waitElementToBeClickable(element);
+        Select select = new Select(element);
+        select.selectByVisibleText(text);
     }
 }

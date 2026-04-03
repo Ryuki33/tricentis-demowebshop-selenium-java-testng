@@ -52,4 +52,12 @@ public class HeaderMenuSection extends BaseComponent {
     public boolean isLoginSuccessful(String userName) {
         return accountLink.getText().equalsIgnoreCase(userName);
     }
+
+    public void logout() {
+        click(logoutLink);
+    }
+
+    public boolean isLogoutSuccessful() {
+        return logInLink.isDisplayed();
+    }
 }

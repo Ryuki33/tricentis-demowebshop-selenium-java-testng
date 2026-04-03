@@ -24,6 +24,12 @@ public class ShoppingCartPage extends BasePage {
     @FindBy(css="tr.cart-item-row")
     List<WebElement> productsInCart;
 
+    @FindBy(id="termsofservice")
+    WebElement termsOfServiceCheckbox;
+
+    @FindBy(id="checkout")
+    WebElement checkOutButton;
+
     public ShoppingCartPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -66,5 +72,11 @@ public class ShoppingCartPage extends BasePage {
 
     public void removeAllProductsFromCart(List<Product> products) {
         products.forEach(this::removeProductFromCart);
+    }
+
+    public CheckoutPage goToCheckoutPage() {
+        click(termsOfServiceCheckbox);
+        click(checkOutButton);
+        return new CheckoutPage(driver);
     }
 }

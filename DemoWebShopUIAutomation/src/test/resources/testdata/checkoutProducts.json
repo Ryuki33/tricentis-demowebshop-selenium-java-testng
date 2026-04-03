@@ -1,0 +1,48 @@
+[
+  {
+    "checkoutProduct": {
+        "products": [
+          {
+            "name": "Blue Jeans",
+            "category": "APPAREL_AND_SHOES",
+            "price": 1.00,
+            "quantity": 3
+          },
+          {
+            "name": "Computing and Internet",
+            "category": "BOOKS",
+            "price": 10.00,
+            "quantity": 2
+          }
+        ],
+        "billingAddress": {
+          "country": "Philippines",
+          "state": "Other (Non US)",
+          "city": "Pasig City",
+          "address1": "161 Ortigas Ave",
+          "zipPostalCode": "1600",
+          "phoneNumber": "1234567890"
+        },
+        "shippingAddress": {
+          "country": "New Zealand",
+          "state": "Other (Non US)",
+          "city": "Wellington",
+          "address1": "26 Philip Street",
+          "zipPostalCode": "6037",
+          "phoneNumber": "9876543210"
+        },
+        "shippingMethod": "GROUND",
+        "paymentDetails": {
+          "paymentMethod": "CREDIT_CARD",
+          "creditCardInfo": {
+            "cardType": "VISA",
+            "cardholderName": "Carm Lewi",
+            "cardNumber": "4111 1111 1111 1111",
+            "expirationMonth": "12",
+            "expirationYear": "2030",
+            "cardCode": "123"
+          }
+        }
+    }
+  }
+]

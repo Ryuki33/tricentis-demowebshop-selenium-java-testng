@@ -36,7 +36,7 @@ public class AddProductToCartTest extends BaseTest {
 
     @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
     @DataSource("addProductsToCart.json")
-    public void addProductsToCart(Map<String, Object> data) {
+    public void addProductsToCartTest(Map<String, Object> data) {
         //Get the Products
         products = ProductMapper.fromJson(data);
 
@@ -61,7 +61,7 @@ public class AddProductToCartTest extends BaseTest {
                 "Total Prices of products in cart are not correct");
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void removeProductsFromCart() {
         //Go to Shopping Cart Page
         ShoppingCartPage shoppingCartPage = homePage.getHeader().goToShoppingCartPage();
