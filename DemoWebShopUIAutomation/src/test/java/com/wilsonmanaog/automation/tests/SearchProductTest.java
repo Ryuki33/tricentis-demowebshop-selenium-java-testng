@@ -16,12 +16,12 @@ public class SearchProductTest extends BaseTest {
     @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
     @DataSource("validProductSearch.json")
     public void validProductSearchTest(Map<String, Object> data) {
+        //Get the Products
+        List<Product> expectedProducts = ProductMapper.fromJson(data);
+
         //Go to Search Products Page
         SearchProductsPage searchProductsPage = homePage.searchForProduct((String) data.get("searchKeyword"));
         searchProductsPage.waitForPageToLoad();
-
-        //Get the Products
-        List<Product> expectedProducts = ProductMapper.fromJson(data);
 
         //Verify Product Search Results
         Assert.assertTrue(searchProductsPage.areProductsDisplayed(expectedProducts),

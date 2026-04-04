@@ -1,6 +1,7 @@
 package com.wilsonmanaog.automation.pages;
 
 import com.wilsonmanaog.automation.base.BasePage;
+import com.wilsonmanaog.automation.model.UserRegistration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -50,17 +51,18 @@ public class RegisterUserPage extends BasePage {
         waitElementToBeVisible(registerUserPageTitle);
     }
 
-    public void registerUser(String gender, String firstName, String lastName, String email, String password) {
-        if (gender.equalsIgnoreCase("Male")) {
+    public void registerUser(UserRegistration user) {
+        waitForPageToLoad();
+        if (user.getGender().equalsIgnoreCase("Male")) {
             click(maleGenderRadioButton);
-        } else if (gender.equalsIgnoreCase("Female")) {
+        } else if (user.getGender().equalsIgnoreCase("Female")) {
             click(femaleGenderRadioButton);
         }
-        typeText(firstNameTextBox, firstName);
-        typeText(lastNameTextBox, lastName);
-        typeText(emailTextBox, email);
-        typeText(passwordTextBox, password);
-        typeText(confirmPasswordTextBox, password);
+        typeText(firstNameTextBox, user.getFirstName());
+        typeText(lastNameTextBox, user.getLastName());
+        typeText(emailTextBox, user.getEmail());
+        typeText(passwordTextBox, user.getPassword());
+        typeText(confirmPasswordTextBox, user.getPassword());
         click(registerButton);
     }
 

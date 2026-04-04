@@ -27,11 +27,10 @@ public class AddProductToCartTest extends BaseTest {
     public void login() {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
-        loginPage.waitForPageToLoad();
 
         //Perform Login
         User user = new User(ConfigReader.get("email"), ConfigReader.get("password"));
-        loginPage.login(user.getEmail(), user.getPassword());
+        loginPage.login(user);
     }
 
     @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)

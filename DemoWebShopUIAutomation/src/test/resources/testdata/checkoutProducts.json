@@ -23,15 +23,18 @@
           "zipPostalCode": "1600",
           "phoneNumber": "1234567890"
         },
-        "shippingAddress": {
-          "country": "New Zealand",
-          "state": "Other (Non US)",
-          "city": "Wellington",
-          "address1": "26 Philip Street",
-          "zipPostalCode": "6037",
-          "phoneNumber": "9876543210"
+        "shippingInfo": {
+          "isInStorePickup": false,
+          "shippingAddress": {
+            "country": "New Zealand",
+            "state": "Other (Non US)",
+            "city": "Wellington",
+            "address1": "26 Philip Street",
+            "zipPostalCode": "6037",
+            "phoneNumber": "9876543210"
+          },
+          "shippingMethod": "GROUND"
         },
-        "shippingMethod": "GROUND",
         "paymentDetails": {
           "paymentMethod": "CREDIT_CARD",
           "creditCardInfo": {
@@ -43,6 +46,122 @@
             "cardCode": "123"
           }
         }
+    }
+  },
+  {
+    "checkoutProduct": {
+      "products": [
+        {
+          "name": "Blue and green Sneaker",
+          "category": "APPAREL_AND_SHOES",
+          "price": 11.00,
+          "quantity": 1
+        },
+        {
+          "name": "3rd Album",
+          "category": "DIGITAL_DOWNLOADS",
+          "price": 1.00,
+          "quantity": 2
+        }
+      ],
+      "billingAddress": {
+        "country": "Australia",
+        "state": "Other (Non US)",
+        "city": "Sydney",
+        "address1": "111 Place Street",
+        "zipPostalCode": "1544",
+        "phoneNumber": "8901625411"
+      },
+      "shippingInfo": {
+        "isInStorePickup": false,
+        "shippingAddress": {
+          "country": "New Zealand",
+          "state": "Other (Non US)",
+          "city": "Auckland",
+          "address1": "21 Amapur Drive",
+          "zipPostalCode": "6088",
+          "phoneNumber": "6578909811"
+        },
+        "shippingMethod": "NEXT_DAY_AIR"
+      },
+      "paymentDetails": {
+        "paymentMethod": "CASH_ON_DELIVERY"
+      }
+    }
+  },
+  {
+    "checkoutProduct": {
+      "products": [
+        {
+          "name": "Fiction",
+          "category": "BOOKS",
+          "price": 24.00,
+          "quantity": 1
+        }
+      ],
+      "billingAddress": {
+        "country": "Australia",
+        "state": "Other (Non US)",
+        "city": "Melbourne",
+        "address1": "222 Place Street",
+        "zipPostalCode": "1322",
+        "phoneNumber": "3232467899"
+      },
+      "shippingInfo": {
+        "isInStorePickup": false,
+        "shippingAddress": {
+          "country": "Japan",
+          "state": "Other (Non US)",
+          "city": "Tokyo",
+          "address1": "133 Sakura Street",
+          "zipPostalCode": "5544",
+          "phoneNumber": "7689098111"
+        },
+        "shippingMethod": "SECOND_DAY_AIR"
+      },
+      "paymentDetails": {
+        "paymentMethod": "CHECK_MONEY"
+      }
+    }
+  },
+  {
+    "checkoutProduct": {
+      "products": [
+        {
+          "name": "Casual Golf Belt",
+          "category": "APPAREL_AND_SHOES",
+          "price": 1.00,
+          "quantity": 15
+        },
+        {
+          "name": "Health Book",
+          "category": "BOOKS",
+          "price": 10.00,
+          "quantity": 1
+        },
+        {
+          "name": "Music 2",
+          "category": "DIGITAL_DOWNLOADS",
+          "price": 10.00,
+          "quantity": 2
+        }
+      ],
+      "billingAddress": {
+        "country": "Philippines",
+        "state": "Other (Non US)",
+        "city": "Laguna",
+        "address1": "33 Santa Rosa Street",
+        "zipPostalCode": "4355",
+        "phoneNumber": "8790932144"
+      },
+      "shippingInfo": {
+        "isInStorePickup": true,
+        "shippingMethod": "IN_STORE_PICKUP"
+      },
+      "paymentDetails": {
+        "paymentMethod": "PURCHASE_ORDER",
+        "purchaseOrderNumber": "PO123456789"
+      }
     }
   }
 ]

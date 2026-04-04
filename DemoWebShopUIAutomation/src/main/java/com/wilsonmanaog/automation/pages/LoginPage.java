@@ -1,6 +1,7 @@
 package com.wilsonmanaog.automation.pages;
 
 import com.wilsonmanaog.automation.base.BasePage;
+import com.wilsonmanaog.automation.model.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,9 +33,10 @@ public class LoginPage extends BasePage {
         waitElementToBeVisible(loginPageTitle);
     }
 
-    public void login(String email, String password) {
-        typeText(emailTextBox, email);
-        typeText(passwordTextBox, password);
+    public void login(User user) {
+        waitForPageToLoad();
+        typeText(emailTextBox, user.getEmail());
+        typeText(passwordTextBox, user.getPassword());
         click(loginButton);
     }
 

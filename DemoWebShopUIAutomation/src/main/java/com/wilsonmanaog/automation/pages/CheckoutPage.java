@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class CheckoutPage extends BasePage {
 
     @FindBy(xpath="//div/h1[contains(text(),'Checkout')]")
@@ -115,6 +116,9 @@ public class CheckoutPage extends BasePage {
     @FindBy(css="li#opc-payment_info input#CardCode")
     WebElement cardCodeTextBox;
 
+    @FindBy(css="li#opc-payment_info input#PurchaseOrderNumber")
+    WebElement purchaseOrderNumberTextBox;
+
     @FindBy(css="li#opc-confirm_order ul.billing-info li")
     List<WebElement> billingInfo;
 
@@ -171,35 +175,41 @@ public class CheckoutPage extends BasePage {
         selectOptionByVisibleText(shippingAddressSelectDropdown, "New Address");
     }
 
-    public void populateBillingAddress(String country, String state, String city, String address, String zipPostalCode, String phoneNumber) {
-        selectOptionByVisibleText(billingAddressCountryDropdown, country);
-        selectOptionByVisibleText(billingAddressStateDropdown, state);
-        typeText(billingAddressCityTextBox, city);
-        typeText(billingAddressAddress1TextBox, address);
-        typeText(billingAddressZipPostalCodeTextBox, zipPostalCode);
-        typeText(billingAddressPhoneNumberTextBox, phoneNumber);
+    public void populateBillingAddress(Address billingAddress) {
+        selectOptionByVisibleText(billingAddressCountryDropdown, billingAddress.getCountry());
+        selectOptionByVisibleText(billingAddressStateDropdown, billingAddress.getState());
+        typeText(billingAddressCityTextBox, billingAddress.getCity());
+        typeText(billingAddressAddress1TextBox, billingAddress.getAddress());
+        typeText(billingAddressZipPostalCodeTextBox, billingAddress.getZipCode());
+        typeText(billingAddressPhoneNumberTextBox, billingAddress.getPhoneNumber());
     }
 
-    public void populateShippingAddress(String country, String state, String city, String address, String zipPostalCode, String phoneNumber) {
-        selectOptionByVisibleText(shippingAddressCountryDropdown, country);
-        selectOptionByVisibleText(shippingAddressStateDropdown, state);
-        typeText(shippingAddressCityTextBox, city);
-        typeText(shippingAddressAddress1TextBox, address);
-        typeText(shippingAddressZipPostalCodeTextBox, zipPostalCode);
-        typeText(shippingAddressPhoneNumberTextBox, phoneNumber);
+    public void populateShippingAddress(Address shippingAddress) {
+        selectOptionByVisibleText(shippingAddressCountryDropdown, shippingAddress.getCountry());
+        selectOptionByVisibleText(shippingAddressStateDropdown, shippingAddress.getState());
+        typeText(shippingAddressCityTextBox, shippingAddress.getCity());
+        typeText(shippingAddressAddress1TextBox, shippingAddress.getAddress());
+        typeText(shippingAddressZipPostalCodeTextBox, shippingAddress.getZipCode());
+        typeText(shippingAddressPhoneNumberTextBox, shippingAddress.getPhoneNumber());
     }
 
-    public void completeBillingAddressStep(String country, String state, String city, String address, String zipPostalCode, String phoneNumber) {
+    public void completeBillingAddressStep(Address billingAddress) {
         waitForBillingAddressStep();
         selectNewBillingAddress();
-        populateBillingAddress(country, state, city, address, zipPostalCode, phoneNumber);
+        populateBillingAddress(billingAddress);
         click(billingAddressContinueButton);
     }
 
-    public void completeShippingAddressStep(String country, String state, String city, String address, String zipPostalCode, String phoneNumber) {
+    public void completeShippingAddressStep(Map<String, Object> shippingInfo) {
         waitForShippingAddressStep();
-        selectNewShippingAddress();
-        populateShippingAddress(country, state, city, address, zipPostalCode, phoneNumber);
+        if ((boolean) shippingInfo.get("isInStorePickup")) {
+            click(inStorePickupCheckbox);
+        } else {
+            selectNewShippingAddress();
+            Map<String, String> shippingAddressData = (Map<String, String>) shippingInfo.get("shippingAddress");
+            Address shippingAddress = new Address(shippingAddressData.get("country"), shippingAddressData.get("state"), shippingAddressData.get("city"), shippingAddressData.get("address1"), shippingAddressData.get("zipPostalCode"), shippingAddressData.get("phoneNumber"));
+            populateShippingAddress(shippingAddress);
+        }
         click(shippingAddressContinueButton);
     }
 
@@ -208,10 +218,13 @@ public class CheckoutPage extends BasePage {
         click(driver.findElement(By.xpath(formattedXpath)));
     }
 
-    public void completeShippingMethodStep(ShippingMethod shippingMethod) {
-        waitForShippingMethodStep();
-        selectShippingMethod(shippingMethod);
-        click(shippingMethodContinueButton);
+    public void completeShippingMethodStepIfRequired(Map<String, Object> shippingInfo) {
+        if (!((boolean) shippingInfo.get("isInStorePickup"))) {
+            ShippingMethod shippingMethod = ShippingMethod.valueOf((String) shippingInfo.get("shippingMethod"));
+            waitForShippingMethodStep();
+            selectShippingMethod(shippingMethod);
+            click(shippingMethodContinueButton);
+        }
     }
 
     public void selectPaymentMethod(PaymentMethod paymentMethod) {
@@ -225,16 +238,19 @@ public class CheckoutPage extends BasePage {
         click(paymentMethodContinueButton);
     }
 
-    public void populateCreditCardInfo(CreditCardType creditCardType, String expireMonth, String expireYear, String cardHolderName, String cardNumber, String cardCode) {
-        selectOptionByVisibleText(creditCardSelectDropdown, creditCardType.getName());
-        selectOptionByVisibleText(expireMonthSelectDropdown, expireMonth);
-        selectOptionByVisibleText(expireYearSelectDropdown, expireYear);
-        typeText(cardHolderNameTextBox, cardHolderName);
-        typeText(cardNumberTextBox, cardNumber);
-        typeText(cardCodeTextBox, cardCode);
+    public void populateCreditCardInfo(CreditCardInfo creditCardInfo) {
+        selectOptionByVisibleText(creditCardSelectDropdown, creditCardInfo.getCardType().getName());
+        selectOptionByVisibleText(expireMonthSelectDropdown, creditCardInfo.getExpirationMonth());
+        selectOptionByVisibleText(expireYearSelectDropdown, creditCardInfo.getExpirationYear());
+        typeText(cardHolderNameTextBox, creditCardInfo.getCardholderName());
+        typeText(cardNumberTextBox, creditCardInfo.getCardNumber());
+        typeText(cardCodeTextBox, creditCardInfo.getCardCode());
     }
 
-    @SuppressWarnings("unchecked")
+    public void populatePurchaseOrderInfo(String purchaseOrderNumber) {
+        typeText(purchaseOrderNumberTextBox, purchaseOrderNumber);
+    }
+
     public void completePaymentInfoStep(Map<String,Object> paymentDetails) {
         waitForPaymentInfoStep();
         String paymentMethod = PaymentMethod.valueOf((String) paymentDetails.get("paymentMethod")).getName();
@@ -242,14 +258,15 @@ public class CheckoutPage extends BasePage {
             case "Credit Card":
                 Map<String, String> creditCardDetails = (Map<String, String>) paymentDetails.get("creditCardInfo");
                 CreditCardInfo creditCardInfo = new CreditCardInfo(CreditCardType.valueOf(creditCardDetails.get("cardType")), creditCardDetails.get("cardholderName"), creditCardDetails.get("cardNumber"), creditCardDetails.get("expirationMonth"), creditCardDetails.get("expirationYear"), creditCardDetails.get("cardCode"));
-                populateCreditCardInfo(creditCardInfo.getCardType(), creditCardInfo.getExpirationMonth(), creditCardInfo.getExpirationYear(), creditCardInfo.getCardholderName(), creditCardInfo.getCardNumber(), creditCardInfo.getCardCode());
+                populateCreditCardInfo(creditCardInfo);
                 break;
             case "Cash On Delivery":
-                //placeholder
             case "Check / Money Order":
-                //placeholder
+                break;
             case "Purchase Order":
-                //placeholder
+                String purchaseOrderNumber = (String) paymentDetails.get("purchaseOrderNumber");
+                populatePurchaseOrderInfo(purchaseOrderNumber);
+                break;
             default:
                 throw new RuntimeException("Unsupported payment method: " + paymentMethod);
         }
@@ -301,12 +318,21 @@ public class CheckoutPage extends BasePage {
         }
     }
 
-    public boolean areConfirmOrderDetailsCorrect(Address billingAddress, Address shippingAddress, double tax, PaymentMethod paymentMethod, ShippingMethod shippingMethod, List<Product> products) {
-        return isBillingAddressCorrectlyDisplayed(billingAddress)
-                && isShippingAddressCorrectlyDisplayed(shippingAddress)
-                && isPaymentMethodCorrectlyDisplayed(paymentMethod)
-                && isShippingMethodCorrectlyDisplayed(shippingMethod)
-                && areProductCostDetailsCorrect(products, tax, shippingMethod, paymentMethod);
+    public boolean areConfirmOrderDetailsCorrect(Address billingAddress, Map<String, Object> shippingInfo, double tax, PaymentMethod paymentMethod, ShippingMethod shippingMethod, List<Product> products) {
+        if ((boolean) shippingInfo.get("isInStorePickup")) {
+            return isBillingAddressCorrectlyDisplayed(billingAddress)
+                    && isPaymentMethodCorrectlyDisplayed(paymentMethod)
+                    && isShippingMethodCorrectlyDisplayed(shippingMethod)
+                    && areProductCostDetailsCorrect(products, tax, shippingMethod, paymentMethod);
+        } else {
+            Map<String, String> shippingAddressData = (Map<String, String>) shippingInfo.get("shippingAddress");
+            Address shippingAddress = new Address(shippingAddressData.get("country"), shippingAddressData.get("state"), shippingAddressData.get("city"), shippingAddressData.get("address1"), shippingAddressData.get("zipPostalCode"), shippingAddressData.get("phoneNumber"));
+            return isBillingAddressCorrectlyDisplayed(billingAddress)
+                    && isShippingAddressCorrectlyDisplayed(shippingAddress)
+                    && isPaymentMethodCorrectlyDisplayed(paymentMethod)
+                    && isShippingMethodCorrectlyDisplayed(shippingMethod)
+                    && areProductCostDetailsCorrect(products, tax, shippingMethod, paymentMethod);
+        }
     }
 
     public boolean isConfirmOrderSuccessful() {

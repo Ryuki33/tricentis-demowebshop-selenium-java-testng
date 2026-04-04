@@ -16,11 +16,10 @@ public class LoginTest extends BaseTest {
     public void validLoginTest(Map<String, String> data) {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
-        loginPage.waitForPageToLoad();
 
         //Perform Login
         User user = new User(data.get("email"), data.get("password"));
-        loginPage.login(user.getEmail(), user.getPassword());
+        loginPage.login(user);
 
         //Verify Login Successful
         Assert.assertTrue(homePage.getHeader().isLoginSuccessful(user.getEmail()),
@@ -32,11 +31,10 @@ public class LoginTest extends BaseTest {
     public void invalidLoginTest(Map<String, String> data) {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
-        loginPage.waitForPageToLoad();
 
         //Perform Login
         User user = new User(data.get("email"), data.get("password"));
-        loginPage.login(user.getEmail(), user.getPassword());
+        loginPage.login(user);
 
         //Verify Login Error Message
         Assert.assertTrue(loginPage.isLoginErrorMessageDisplayed(),

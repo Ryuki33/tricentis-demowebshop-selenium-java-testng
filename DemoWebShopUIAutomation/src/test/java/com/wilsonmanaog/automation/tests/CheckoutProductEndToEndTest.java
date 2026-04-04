@@ -20,11 +20,10 @@ public class CheckoutProductEndToEndTest extends BaseTest {
     public void login() {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
-        loginPage.waitForPageToLoad();
 
         //Perform Login
         User user = new User(ConfigReader.get("email"), ConfigReader.get("password"));
-        loginPage.login(user.getEmail(), user.getPassword());
+        loginPage.login(user);
     }
 
     @Test(groups = {"RegressionTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
@@ -52,17 +51,17 @@ public class CheckoutProductEndToEndTest extends BaseTest {
         CheckoutPage checkoutPage = shoppingCartPage.goToCheckoutPage();
         checkoutPage.waitForPageToLoad();
 
-        //Complete Billing and Shipping Address Steps
+        //Complete Billing Address Step
         Map<String, String> billingAddressData = (Map<String, String>) ((Map<String, Object>) data.get("checkoutProduct")).get("billingAddress");
         Address billingAddress = new Address(billingAddressData.get("country"), billingAddressData.get("state"), billingAddressData.get("city"), billingAddressData.get("address1"), billingAddressData.get("zipPostalCode"), billingAddressData.get("phoneNumber"));
-        checkoutPage.completeBillingAddressStep(billingAddress.getCountry(), billingAddress.getState(), billingAddress.getCity(), billingAddress.getAddress(), billingAddress.getZipCode(), billingAddress.getPhoneNumber());
+        checkoutPage.completeBillingAddressStep(billingAddress);
 
-        Map<String, String> shippingAddressData = (Map<String, String>) ((Map<String, Object>) data.get("checkoutProduct")).get("shippingAddress");
-        Address shippingAddress = new Address(shippingAddressData.get("country"), shippingAddressData.get("state"), shippingAddressData.get("city"), shippingAddressData.get("address1"), shippingAddressData.get("zipPostalCode"), shippingAddressData.get("phoneNumber"));
-        checkoutPage.completeShippingAddressStep(shippingAddress.getCountry(), shippingAddress.getState(), shippingAddress.getCity(), shippingAddress.getAddress(), shippingAddress.getZipCode(), shippingAddress.getPhoneNumber());
+        //Complete Shipping Address Step
+        Map<String, Object> shippingInfo = (Map<String, Object>) ((Map<String, Object>) data.get("checkoutProduct")).get("shippingInfo");
+        checkoutPage.completeShippingAddressStep(shippingInfo);
 
-        //Select Shipping Method
-        checkoutPage.completeShippingMethodStep(ShippingMethod.valueOf((String) ((Map<String, Object>) data.get("checkoutProduct")).get("shippingMethod")));
+        //Select Shipping Method if Required
+        checkoutPage.completeShippingMethodStepIfRequired(shippingInfo);
 
         //Select Payment Method and Complete Payment Information
         checkoutPage.completePaymentMethodStep(PaymentMethod.valueOf((String) ((Map<String, Object>) ((Map<String, Object>) data.get("checkoutProduct")).get("paymentDetails")).get("paymentMethod")));
@@ -73,10 +72,10 @@ public class CheckoutProductEndToEndTest extends BaseTest {
         double tax = 0.00;
         Assert.assertTrue(checkoutPage.areConfirmOrderDetailsCorrect(
                 billingAddress,
-                shippingAddress,
+                shippingInfo,
                 tax,
                 PaymentMethod.valueOf((String) ((Map<String, Object>) ((Map<String, Object>) data.get("checkoutProduct")).get("paymentDetails")).get("paymentMethod")),
-                ShippingMethod.valueOf((String) ((Map<String, Object>) data.get("checkoutProduct")).get("shippingMethod")),
+                ShippingMethod.valueOf((String) shippingInfo.get("shippingMethod")),
                 products), "Order details verification failed. Expected order details to be correct before confirming order."
         );
 
