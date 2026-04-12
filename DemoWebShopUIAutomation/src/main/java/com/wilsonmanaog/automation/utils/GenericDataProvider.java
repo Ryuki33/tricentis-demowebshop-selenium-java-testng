@@ -2,12 +2,14 @@ package com.wilsonmanaog.automation.utils;
 
 import com.wilsonmanaog.automation.config.DataSource;
 import org.testng.annotations.DataProvider;
+
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class GenericDataProvider {
 
     @DataProvider(name = "dataProvider")
-    public static Object[][] provideData(Method testMethod) {
+    public static Object[][] provideData(Method testMethod) throws IOException {
 
         DataSource dataSource = testMethod.getAnnotation(DataSource.class);
         TestDataReader testDataReader;

@@ -58,6 +58,6 @@ public class HeaderMenuSection extends BaseComponent {
     }
 
     public boolean isLogoutSuccessful() {
-        return logInLink.isDisplayed();
+        return isElementDisplayed(logInLink);
     }
 }

@@ -1,6 +1,7 @@
 package com.wilsonmanaog.automation.utils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ public class CSVUtils {
         // prevent instantiation
     }
 
-    public static Object[][] readCsv(String resourcePath) {
+    public static Object[][] readCsv(String resourcePath) throws IOException {
         List<Map<String, String>> rows = new ArrayList<>();
+        BufferedReader reader = null;
 
         try {
             InputStream is = CSVUtils.class
@@ -26,7 +28,7 @@ public class CSVUtils {
                 throw new RuntimeException("CSV file not found: " + resourcePath);
             }
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            reader = new BufferedReader(new InputStreamReader(is));
             String[] headers = reader.readLine().split(",");
 
             String line;
@@ -41,6 +43,9 @@ public class CSVUtils {
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to read CSV: " + resourcePath, e);
+        } finally {
+            assert reader != null;
+            reader.close();
         }
 
         Object[][] data = new Object[rows.size()][1];

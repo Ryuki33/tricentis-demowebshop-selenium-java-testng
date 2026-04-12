@@ -16,7 +16,7 @@ public class DriverFactory {
         String browserName = System.getProperty("browser", ConfigReader.get("browser")).toLowerCase();
         WebDriver driver;
 
-        if (browserName.contains("chrome")) {
+        if (browserName.startsWith("chrome")) {
             ChromeOptions options = new ChromeOptions();
             options.setAcceptInsecureCerts(true);
             WebDriverManager.chromedriver().setup();
@@ -25,11 +25,11 @@ public class DriverFactory {
             }
             driver = new ChromeDriver(options);
 
-        } else if (browserName.equalsIgnoreCase("firefox")) {
+        } else if (browserName.startsWith("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             driver = new FirefoxDriver();
 
-        } else if (browserName.equalsIgnoreCase("edge")) {
+        } else if (browserName.startsWith("edge")) {
             WebDriverManager.edgedriver().setup();
             driver = new EdgeDriver();
 

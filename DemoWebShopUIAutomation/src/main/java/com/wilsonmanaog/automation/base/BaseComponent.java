@@ -17,4 +17,8 @@ public abstract class BaseComponent {
     public void click(WebElement element) {
         actions.click(element);
     }
+
+    public boolean isElementDisplayed(WebElement element) {
+        return actions.isElementDisplayed(element);
+    }
 }

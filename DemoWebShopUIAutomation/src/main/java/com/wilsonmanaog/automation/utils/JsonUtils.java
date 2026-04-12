@@ -3,7 +3,6 @@ package com.wilsonmanaog.automation.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +13,10 @@ public class JsonUtils {
     }
 
     public static Object[][] readJson(String resourcePath) {
+        ObjectMapper mapper = null;
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
+            mapper = new ObjectMapper();
 
             InputStream is = JsonUtils.class
                     .getClassLoader()
@@ -41,6 +41,10 @@ public class JsonUtils {
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to read JSON: " + resourcePath, e);
+        } finally {
+            if (mapper != null) {
+                mapper = null; // help GC
+            }
         }
     }
 }

@@ -36,6 +36,10 @@ public abstract class BasePage {
         actions.selectOptionByVisibleText(element, text);
     }
 
+    public boolean isElementDisplayed(WebElement element) {
+        return actions.isElementDisplayed(element);
+    }
+
     public HeaderMenuSection getHeader() {
         return header;
     }

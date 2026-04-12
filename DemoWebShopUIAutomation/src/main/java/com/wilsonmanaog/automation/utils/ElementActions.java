@@ -40,4 +40,13 @@ public class ElementActions {
         Select select = new Select(element);
         select.selectByVisibleText(text);
     }
+
+    public boolean isElementDisplayed(WebElement element) {
+        try {
+            waitElementToBeVisible(element);
+            return element.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
