@@ -23,7 +23,7 @@ public class AddProductToCartTest extends BaseTest {
 
     private List<Product> products;
 
-    @BeforeMethod
+    @BeforeMethod(groups = {"SmokeTests"})
     public void login() {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
@@ -60,7 +60,7 @@ public class AddProductToCartTest extends BaseTest {
                 "Total Prices of products in cart are not correct");
     }
 
-    @AfterMethod(alwaysRun = true)
+    @AfterMethod(alwaysRun = true, groups = {"SmokeTests"})
     public void removeProductsFromCart() {
         //Go to Shopping Cart Page
         ShoppingCartPage shoppingCartPage = homePage.getHeader().goToShoppingCartPage();

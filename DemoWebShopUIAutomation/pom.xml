@@ -79,4 +79,64 @@
       </dependency>
 
   </dependencies>
+
+  <profiles>
+      <!-- Smoke Tests Profile -->
+        <profile>
+            <id>smoke-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.1.2</version>
+                        <configuration>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/testSuites/smokeTests.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+      <!-- Regression Tests Profile -->
+      <profile>
+          <id>regression-tests</id>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-surefire-plugin</artifactId>
+                      <version>3.1.2</version>
+                      <configuration>
+                          <suiteXmlFiles>
+                              <suiteXmlFile>src/test/resources/testSuites/regressionTests.xml</suiteXmlFile>
+                          </suiteXmlFiles>
+                      </configuration>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
+
+      <!-- Error Validation Tests Profile -->
+      <profile>
+          <id>error-validation-tests</id>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-surefire-plugin</artifactId>
+                      <version>3.1.2</version>
+                      <configuration>
+                          <suiteXmlFiles>
+                              <suiteXmlFile>src/test/resources/testSuites/errorValidationTests.xml</suiteXmlFile>
+                          </suiteXmlFiles>
+                      </configuration>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
+  </profiles>
+
 </project>

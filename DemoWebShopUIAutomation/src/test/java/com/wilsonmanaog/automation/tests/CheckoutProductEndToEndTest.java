@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class CheckoutProductEndToEndTest extends BaseTest {
 
-    @BeforeMethod
+    @BeforeMethod(groups = {"RegressionTests"})
     public void login() {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
@@ -83,7 +83,7 @@ public class CheckoutProductEndToEndTest extends BaseTest {
         Assert.assertTrue(checkoutPage.isConfirmOrderSuccessful(), "Order confirmation failed. Expected order to be confirmed successfully.");
     }
 
-    @AfterMethod
+    @AfterMethod(groups = {"RegressionTests"})
     public void logout() {
         homePage.getHeader().logout();
     }
