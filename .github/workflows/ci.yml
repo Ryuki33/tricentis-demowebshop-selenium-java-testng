@@ -23,10 +23,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          
       # 3. Run tests (this generates Extent report)
       - name: Build and run tests
         run: mvn clean test -Dbrowser=chrome-headless
-
+        working-directory: DemoWebShopUIAutomation
+        
       # 4. Upload Extent Report
       - name: Upload Extent Report
         if: always()
