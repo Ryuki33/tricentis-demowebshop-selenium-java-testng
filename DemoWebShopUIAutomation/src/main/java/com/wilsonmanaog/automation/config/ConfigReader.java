@@ -11,7 +11,7 @@ public class ConfigReader {
         try {
             FileInputStream fis = new FileInputStream(
                     System.getProperty("user.dir") +
-                            "//src//main//resources//GlobalData.properties"
+                            "/src/main/resources/GlobalData.properties"
             );
             prop.load(fis);
         } catch (Exception e) {

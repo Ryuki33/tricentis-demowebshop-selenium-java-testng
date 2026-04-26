@@ -11,7 +11,7 @@ public class ExtentReportManager {
 
     public static ExtentReports getInstance() {
         if (extent == null) {
-            String path = System.getProperty("user.dir") + "\\reports\\report_" + System.currentTimeMillis() + ".html";
+            String path = System.getProperty("user.dir") + "/reports/report_" + System.currentTimeMillis() + ".html";
             ExtentSparkReporter spark = new ExtentSparkReporter(path);
             spark.config().setReportName("Demo Web Shop Automation Test Results");
             spark.config().setDocumentTitle("Demo Web Shop Test Report");
