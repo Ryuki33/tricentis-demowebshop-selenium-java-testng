@@ -35,3 +35,10 @@ jobs:
         with:
           name: extent-report
           path: DemoWebShopUIAutomation/reports/
+          
+      # 5 Upload Logs
+      - name: Upload Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: DemoWebShopUIAutomation/logs/
