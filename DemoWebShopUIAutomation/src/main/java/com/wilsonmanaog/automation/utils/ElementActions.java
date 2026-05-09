@@ -1,5 +1,6 @@
 package com.wilsonmanaog.automation.utils;
 
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,6 +11,7 @@ import java.time.Duration;
 
 public class ElementActions {
 
+    private static final Logger log = LogUtils.getLogger(ElementActions.class);
     private final WebDriverWait wait;
 
     public ElementActions(WebDriver driver) {
@@ -46,6 +48,7 @@ public class ElementActions {
             waitElementToBeVisible(element);
             return element.isDisplayed();
         } catch (Exception e) {
+            log.error("Element not displayed: " + e.getMessage());
             return false;
         }
     }

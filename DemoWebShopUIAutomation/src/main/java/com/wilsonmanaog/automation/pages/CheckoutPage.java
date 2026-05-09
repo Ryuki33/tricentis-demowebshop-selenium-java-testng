@@ -2,6 +2,8 @@ package com.wilsonmanaog.automation.pages;
 
 import com.wilsonmanaog.automation.base.BasePage;
 import com.wilsonmanaog.automation.model.*;
+import com.wilsonmanaog.automation.utils.LogUtils;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +15,8 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class CheckoutPage extends BasePage {
+
+    private static final Logger log = LogUtils.getLogger(CheckoutPage.class);
 
     @FindBy(xpath="//div/h1[contains(text(),'Checkout')]")
     WebElement checkoutPageTitle;
@@ -140,42 +144,52 @@ public class CheckoutPage extends BasePage {
     }
 
     public void waitForPageToLoad() {
+        log.info("Waiting for Checkout Page to load...");
         waitElementToBeVisible(checkoutPageTitle);
     }
 
     public void waitForBillingAddressStep() {
+        log.info("Waiting for Billing Address step to be visible...");
         waitElementToBeVisible(billingAddressStepTitle);
     }
 
     public void waitForShippingAddressStep() {
+        log.info("Waiting for Shipping Address step to be visible...");
         waitElementToBeVisible(shippingAddressStepTitle);
     }
 
     public void waitForShippingMethodStep() {
+        log.info("Waiting for Shipping Method step to be visible...");
         waitElementToBeVisible(shippingMethodStepTitle);
     }
 
     public void waitForPaymentMethodStep() {
+        log.info("Waiting for Payment Method step to be visible...");
         waitElementToBeVisible(paymentMethodStepTitle);
     }
 
     public void waitForPaymentInfoStep() {
+        log.info("Waiting for Payment Information step to be visible...");
         waitElementToBeVisible(paymentInfoStepTitle);
     }
 
     public void waitForConfirmOrderStep() {
+        log.info("Waiting for Confirm Order step to be visible...");
         waitElementToBeVisible(confirmOrderStepTitle);
     }
 
     public void selectNewBillingAddress() {
+        log.info("Selecting 'New Address' option for Billing Address...");
         selectOptionByVisibleText(billingAddressSelectDropdown, "New Address");
     }
 
     public void selectNewShippingAddress() {
+        log.info("Selecting 'New Address' option for Shipping Address...");
         selectOptionByVisibleText(shippingAddressSelectDropdown, "New Address");
     }
 
     public void populateBillingAddress(Address billingAddress) {
+        log.info("Populating Billing Address details...");
         selectOptionByVisibleText(billingAddressCountryDropdown, billingAddress.getCountry());
         selectOptionByVisibleText(billingAddressStateDropdown, billingAddress.getState());
         typeText(billingAddressCityTextBox, billingAddress.getCity());
@@ -185,6 +199,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public void populateShippingAddress(Address shippingAddress) {
+        log.info("Populating Shipping Address details...");
         selectOptionByVisibleText(shippingAddressCountryDropdown, shippingAddress.getCountry());
         selectOptionByVisibleText(shippingAddressStateDropdown, shippingAddress.getState());
         typeText(shippingAddressCityTextBox, shippingAddress.getCity());
@@ -194,6 +209,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public void completeBillingAddressStep(Address billingAddress) {
+        log.info("Completing Billing Address step...");
         waitForBillingAddressStep();
         selectNewBillingAddress();
         populateBillingAddress(billingAddress);
@@ -201,6 +217,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public void completeShippingAddressStep(Map<String, Object> shippingInfo) {
+        log.info("Completing Shipping Address step...");
         waitForShippingAddressStep();
         if ((boolean) shippingInfo.get("isInStorePickup")) {
             click(inStorePickupCheckbox);
@@ -214,31 +231,38 @@ public class CheckoutPage extends BasePage {
     }
 
     public void selectShippingMethod(ShippingMethod shippingMethod) {
+        log.info("Selecting Shipping Method: " + shippingMethod.getName());
         String formattedXpath = String.format(SHIPPING_METHOD_RADIO_BUTTON, shippingMethod.getName());
         click(driver.findElement(By.xpath(formattedXpath)));
     }
 
     public void completeShippingMethodStepIfRequired(Map<String, Object> shippingInfo) {
+        log.info("Completing Shipping Method step if required...");
         if (!((boolean) shippingInfo.get("isInStorePickup"))) {
             ShippingMethod shippingMethod = ShippingMethod.valueOf((String) shippingInfo.get("shippingMethod"));
             waitForShippingMethodStep();
             selectShippingMethod(shippingMethod);
             click(shippingMethodContinueButton);
+        } else {
+            log.info("Skipping Shipping Method step as In-Store Pickup is selected.");
         }
     }
 
     public void selectPaymentMethod(PaymentMethod paymentMethod) {
+        log.info("Selecting Payment Method: " + paymentMethod.getName());
         String formattedXpath = String.format(PAYMENT_METHOD_RADIO_BUTTON, paymentMethod.getName());
         click(driver.findElement(By.xpath(formattedXpath)));
     }
 
     public void completePaymentMethodStep(PaymentMethod paymentMethod) {
+        log.info("Completing Payment Method step...");
         waitForPaymentMethodStep();
         selectPaymentMethod(paymentMethod);
         click(paymentMethodContinueButton);
     }
 
     public void populateCreditCardInfo(CreditCardInfo creditCardInfo) {
+        log.info("Populating Credit Card information...");
         selectOptionByVisibleText(creditCardSelectDropdown, creditCardInfo.getCardType().getName());
         selectOptionByVisibleText(expireMonthSelectDropdown, creditCardInfo.getExpirationMonth());
         selectOptionByVisibleText(expireYearSelectDropdown, creditCardInfo.getExpirationYear());
@@ -248,10 +272,12 @@ public class CheckoutPage extends BasePage {
     }
 
     public void populatePurchaseOrderInfo(String purchaseOrderNumber) {
+        log.info("Populating Purchase Order information...");
         typeText(purchaseOrderNumberTextBox, purchaseOrderNumber);
     }
 
     public void completePaymentInfoStep(Map<String,Object> paymentDetails) {
+        log.info("Completing Payment Information step...");
         waitForPaymentInfoStep();
         String paymentMethod = PaymentMethod.valueOf((String) paymentDetails.get("paymentMethod")).getName();
         switch (paymentMethod) {
@@ -274,6 +300,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean isBillingAddressCorrectlyDisplayed(Address billingAddress) {
+        log.info("Checking if Billing Address details are correctly displayed in Confirm Order step...");
         return billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getCountry()))
                 && billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getCity()))
                 && billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getAddress()))
@@ -282,6 +309,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean isShippingAddressCorrectlyDisplayed(Address shippingAddress) {
+        log.info("Checking if Shipping Address details are correctly displayed in Confirm Order step...");
         return shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getCountry()))
                 && shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getCity()))
                 && shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getAddress()))
@@ -290,14 +318,17 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean isPaymentMethodCorrectlyDisplayed(PaymentMethod paymentMethod) {
+        log.info("Checking if Payment Method is correctly displayed in Confirm Order step...");
         return billingInfo.stream().anyMatch(e -> e.getText().contains(paymentMethod.getName()));
     }
 
     public boolean isShippingMethodCorrectlyDisplayed(ShippingMethod shippingMethod) {
+        log.info("Checking if Shipping Method is correctly displayed in Confirm Order step...");
         return shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingMethod.getName()));
     }
 
     public boolean areProductCostDetailsCorrect(List<Product> products, double tax, ShippingMethod shippingMethod, PaymentMethod paymentMethod) {
+        log.info("Checking if Product cost details are correctly displayed in Confirm Order step...");
         double orderSubTotal;
         double orderShippingCost = shippingMethod.getCost();
         double paymentMethodAdditionalFee = paymentMethod.getPaymentMethodAdditionalFee();
@@ -319,6 +350,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean areConfirmOrderDetailsCorrect(Address billingAddress, Map<String, Object> shippingInfo, double tax, PaymentMethod paymentMethod, ShippingMethod shippingMethod, List<Product> products) {
+        log.info("Checking if order details are correctly displayed in Confirm Order step...");
         if ((boolean) shippingInfo.get("isInStorePickup")) {
             return isBillingAddressCorrectlyDisplayed(billingAddress)
                     && isPaymentMethodCorrectlyDisplayed(paymentMethod)
@@ -336,6 +368,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public boolean isConfirmOrderSuccessful() {
+        log.info("Checking if order confirmation is successful...");
         waitForConfirmOrderStep();
         click(confirmOrderButton);
         return orderSuccessMessage.isDisplayed();

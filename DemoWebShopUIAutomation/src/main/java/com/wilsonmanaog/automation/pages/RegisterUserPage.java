@@ -2,12 +2,16 @@ package com.wilsonmanaog.automation.pages;
 
 import com.wilsonmanaog.automation.base.BasePage;
 import com.wilsonmanaog.automation.model.UserRegistration;
+import com.wilsonmanaog.automation.utils.LogUtils;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class RegisterUserPage extends BasePage {
+
+    private static final Logger log = LogUtils.getLogger(RegisterUserPage.class);
 
     @FindBy(id="gender-male")
     WebElement maleGenderRadioButton;
@@ -48,10 +52,12 @@ public class RegisterUserPage extends BasePage {
     }
 
     public void waitForPageToLoad() {
+        log.info("Waiting for the register user page to load...");
         waitElementToBeVisible(registerUserPageTitle);
     }
 
     public void registerUser(UserRegistration user) {
+        log.info("Registering user with email: " + user.getEmail());
         waitForPageToLoad();
         if (user.getGender().equalsIgnoreCase("Male")) {
             click(maleGenderRadioButton);
@@ -67,11 +73,13 @@ public class RegisterUserPage extends BasePage {
     }
 
     public boolean isRegistrationSuccessful(String email) {
+        log.info("Checking if registration was successful for email: " + email);
         return registrationSuccessMessage.isDisplayed() &&
                 getHeader().isLoginSuccessful(email);
     }
 
     public boolean isRegistrationErrorMessageDisplayed(String errorMessage) {
+        log.info("Checking if registration error message is displayed with text: " + errorMessage);
         return registrationErrorMessage.isDisplayed() &&
                 registrationErrorMessage.getText().equalsIgnoreCase(errorMessage);
     }

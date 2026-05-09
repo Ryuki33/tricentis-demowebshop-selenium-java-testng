@@ -2,12 +2,16 @@ package com.wilsonmanaog.automation.pages;
 
 import com.wilsonmanaog.automation.base.BasePage;
 import com.wilsonmanaog.automation.config.ConfigReader;
+import com.wilsonmanaog.automation.utils.LogUtils;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class HomePage extends BasePage {
+
+    private static final Logger log = LogUtils.getLogger(HomePage.class);
 
     @FindBy(css="div.header-logo")
     WebElement homepageLogo;
@@ -27,11 +31,13 @@ public class HomePage extends BasePage {
     }
 
     public void open() {
+        log.info("Opening the home page with URL: " + url);
         driver.get(url);
         waitElementToBeVisible(homepageLogo);
     }
 
     public SearchProductsPage searchForProduct(String productName) {
+        log.info("Searching for product: " + productName);
         typeText(searchTextBox, productName);
         click(searchButton);
         return new SearchProductsPage(driver);
