@@ -3,6 +3,7 @@
 A scalable and maintainable UI test automation framework built with Java, Selenium WebDriver, TestNG, and Maven.
 This framework follows the Page Object Model (POM) design pattern and is designed for easy test execution, reporting, logging, and future scalability.
 
+
 **Tech Stack**
  - Java
  - Selenium WebDriver
@@ -10,6 +11,7 @@ This framework follows the Page Object Model (POM) design pattern and is designe
  - Maven
  - Log4j2
  - Page Object Model (POM)
+
 
 **Features**
  - Page Object Model implementation
@@ -22,6 +24,7 @@ This framework follows the Page Object Model (POM) design pattern and is designe
  - Screenshot capture on failures
  - Scalable project structure
  - Easy integration with CI/CD pipelines
+
 
 **Project Structure**
 ```
@@ -53,6 +56,8 @@ src
 |   └── screenshots
 └── pom.xml
 ```
+
+
 **Design Pattern**
 
 This framework uses the Page Object Model (POM) design pattern to improve:
@@ -61,6 +66,7 @@ This framework uses the Page Object Model (POM) design pattern to improve:
  - Reusability
  - Separation of test logic and page logic
 
+
 **Prerequisites**
 
 Before running the framework, make sure the following are installed:
@@ -68,3 +74,16 @@ Before running the framework, make sure the following are installed:
  - Maven
  - Chrome / Firefox / Edge browser
  - IDE such as IntelliJ IDEA or Eclipse IDE
+
+
+**Installation**
+
+Clone the repository:
+git clone <your-repository-url>
+
+Navigate to the project directory:
+cd your-project-name
+
+Install dependencies:
+mvn clean install
+
