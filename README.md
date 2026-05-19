@@ -24,6 +24,7 @@ This framework follows the Page Object Model (POM) design pattern and is designe
  - Easy integration with CI/CD pipelines
 
 **Project Structure**
+```
 src
 ├── main
 │   └── java
@@ -51,7 +52,7 @@ src
 ├── reports
 |   └── screenshots
 └── pom.xml
-
+```
 **Design Pattern**
 
 This framework uses the Page Object Model (POM) design pattern to improve:
