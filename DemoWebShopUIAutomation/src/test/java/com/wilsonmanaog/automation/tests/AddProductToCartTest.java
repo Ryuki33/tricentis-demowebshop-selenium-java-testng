@@ -12,6 +12,7 @@ import com.wilsonmanaog.automation.pages.ProductPage;
 import com.wilsonmanaog.automation.pages.ShoppingCartPage;
 import com.wilsonmanaog.automation.utils.GenericDataProvider;
 import com.wilsonmanaog.automation.utils.ProductMapper;
+import com.wilsonmanaog.automation.utils.RetryAnalyzer;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -21,23 +22,28 @@ import java.util.Map;
 
 public class AddProductToCartTest extends BaseTest {
 
-    private List<Product> products;
-
-    @BeforeMethod(groups = {"SmokeTests"})
-    public void login() {
+    @BeforeMethod(alwaysRun = true, groups = {"SmokeTests"})
+    public void loginAndEmptyShoppingCart() {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
 
         //Perform Login
         User user = new User(ConfigReader.get("email"), ConfigReader.get("password"));
         loginPage.login(user);
+
+        //Go to Shopping Cart
+        ShoppingCartPage shoppingCartPage = homePage.getHeader().goToShoppingCartPage();
+        shoppingCartPage.waitForPageToLoad();
+
+        //Remove products from cart if there is one
+        shoppingCartPage.removeAllProductsFromCart();
     }
 
-    @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
+    @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class, retryAnalyzer = RetryAnalyzer.class)
     @DataSource("addProductsToCart.json")
     public void addProductsToCartTest(Map<String, Object> data) {
         //Get the Products
-        products = ProductMapper.fromJson(data);
+        List<Product> products = ProductMapper.fromJson(data);
 
         //Add Products to Cart
         for (Product product : products) {
@@ -61,12 +67,15 @@ public class AddProductToCartTest extends BaseTest {
     }
 
     @AfterMethod(alwaysRun = true, groups = {"SmokeTests"})
-    public void removeProductsFromCart() {
+    public void removeProductsFromCartAndLogOut() {
         //Go to Shopping Cart Page
         ShoppingCartPage shoppingCartPage = homePage.getHeader().goToShoppingCartPage();
         shoppingCartPage.waitForPageToLoad();
 
         //Remove all products from cart
-        shoppingCartPage.removeAllProductsFromCart(products);
+        shoppingCartPage.removeAllProductsFromCart();
+
+        //Logout
+        homePage.getHeader().logout();
     }
 }

@@ -48,7 +48,7 @@ public class ElementActions {
             waitElementToBeVisible(element);
             return element.isDisplayed();
         } catch (Exception e) {
-            log.error("Element not displayed: " + e.getMessage());
+            log.warn("Element not displayed: " + e.getMessage());
             return false;
         }
     }

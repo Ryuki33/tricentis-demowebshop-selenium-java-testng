@@ -6,12 +6,14 @@ import com.wilsonmanaog.automation.listeners.TestListener;
 import com.wilsonmanaog.automation.pages.HomePage;
 import com.wilsonmanaog.automation.utils.LogUtils;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 @Listeners(TestListener.class)
 public class BaseTest {
@@ -20,8 +22,9 @@ public class BaseTest {
     protected HomePage homePage;
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp() throws IOException {
-        log.info("=== Test Started ===");
+    public void setUp(Method method) throws IOException {
+        String testName = method.getDeclaringClass().getSimpleName();
+        log.info(String.format("=== Test Started: %s ===", testName));
         WebDriver driver = DriverFactory.createDriver();
         DriverManager.setDriver(driver);
         homePage = new HomePage(driver);

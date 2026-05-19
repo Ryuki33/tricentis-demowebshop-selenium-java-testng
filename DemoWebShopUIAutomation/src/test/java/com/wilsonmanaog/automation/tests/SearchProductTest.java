@@ -6,6 +6,7 @@ import com.wilsonmanaog.automation.model.Product;
 import com.wilsonmanaog.automation.pages.SearchProductsPage;
 import com.wilsonmanaog.automation.utils.GenericDataProvider;
 import com.wilsonmanaog.automation.utils.ProductMapper;
+import com.wilsonmanaog.automation.utils.RetryAnalyzer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 public class SearchProductTest extends BaseTest {
 
-    @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
+    @Test(groups = {"SmokeTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class, retryAnalyzer = RetryAnalyzer.class)
     @DataSource("validProductSearch.json")
     public void validProductSearchTest(Map<String, Object> data) {
         //Get the Products
@@ -28,7 +29,7 @@ public class SearchProductTest extends BaseTest {
                 "Expected products were not displayed for search keyword: " + data.get("searchKeyword"));
     }
 
-    @Test(groups = {"ErrorValidationTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
+    @Test(groups = {"ErrorValidationTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class, retryAnalyzer = RetryAnalyzer.class)
     @DataSource("invalidProductSearch.json")
     public void invalidProductSearchTest(Map<String, Object> data) {
         //Go to Search Products Page

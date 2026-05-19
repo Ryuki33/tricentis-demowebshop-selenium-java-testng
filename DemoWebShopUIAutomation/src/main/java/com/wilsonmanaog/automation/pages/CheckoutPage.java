@@ -301,30 +301,54 @@ public class CheckoutPage extends BasePage {
 
     public boolean isBillingAddressCorrectlyDisplayed(Address billingAddress) {
         log.info("Checking if Billing Address details are correctly displayed in Confirm Order step...");
-        return billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getCountry()))
+        boolean isBillingAddressCorrect = billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getCountry()))
                 && billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getCity()))
                 && billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getAddress()))
                 && billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getZipCode()))
                 && billingInfo.stream().anyMatch(e -> e.getText().contains(billingAddress.getPhoneNumber()));
+        if (isBillingAddressCorrect) {
+            log.info("Billing Address details are correctly displayed in Confirm Order step.");
+        } else {
+            log.error("Billing Address details are NOT correctly displayed in Confirm Order step.");
+        }
+        return isBillingAddressCorrect;
     }
 
     public boolean isShippingAddressCorrectlyDisplayed(Address shippingAddress) {
         log.info("Checking if Shipping Address details are correctly displayed in Confirm Order step...");
-        return shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getCountry()))
+        boolean isShippingAddressCorrect =  shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getCountry()))
                 && shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getCity()))
                 && shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getAddress()))
                 && shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getZipCode()))
                 && shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingAddress.getPhoneNumber()));
+        if (isShippingAddressCorrect) {
+            log.info("Shipping Address details are correctly displayed in Confirm Order step.");
+        } else {
+            log.error("Shipping Address details are NOT correctly displayed in Confirm Order step.");
+        }
+        return isShippingAddressCorrect;
     }
 
     public boolean isPaymentMethodCorrectlyDisplayed(PaymentMethod paymentMethod) {
         log.info("Checking if Payment Method is correctly displayed in Confirm Order step...");
-        return billingInfo.stream().anyMatch(e -> e.getText().contains(paymentMethod.getName()));
+        boolean isPaymentMethodCorrect =  billingInfo.stream().anyMatch(e -> e.getText().contains(paymentMethod.getName()));
+        if (isPaymentMethodCorrect) {
+            log.info("Payment Method is correctly displayed in Confirm Order step.");
+        } else {
+            log.error("Payment Method is NOT correctly displayed in Confirm Order step.");
+        }
+        return isPaymentMethodCorrect;
     }
 
     public boolean isShippingMethodCorrectlyDisplayed(ShippingMethod shippingMethod) {
         log.info("Checking if Shipping Method is correctly displayed in Confirm Order step...");
-        return shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingMethod.getName()));
+        boolean isShippingMethodCorrect =  shippingInfo.stream().anyMatch(e -> e.getText().contains(shippingMethod.getName()));
+        if (isShippingMethodCorrect) {
+            log.info("Shipping Method is correctly displayed in Confirm Order step.");
+        } else {
+            log.error("Shipping Method is NOT correctly displayed in Confirm Order step.");
+        }
+        return isShippingMethodCorrect;
     }
 
     public boolean areProductCostDetailsCorrect(List<Product> products, double tax, ShippingMethod shippingMethod, PaymentMethod paymentMethod) {
@@ -333,20 +357,27 @@ public class CheckoutPage extends BasePage {
         double orderShippingCost = shippingMethod.getCost();
         double paymentMethodAdditionalFee = paymentMethod.getPaymentMethodAdditionalFee();
         double orderTotal;
+        boolean areProductCostsCorrect = false;
         orderSubTotal = products.stream().mapToDouble(product -> product.getPrice() * product.getQuantity()).sum();
         orderTotal = orderSubTotal + orderShippingCost + paymentMethodAdditionalFee + tax;
         if (paymentMethod.getName().equalsIgnoreCase("Cash On Delivery") || paymentMethod.getName().equalsIgnoreCase("Check / Money Order")) {
-            return orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Sub-Total')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderSubTotal)))
+            areProductCostsCorrect =  orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Sub-Total')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderSubTotal)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Shipping')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderShippingCost)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Payment method additional fee')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", paymentMethodAdditionalFee)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Tax')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", tax)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Total')]/parent::td/following-sibling::td//span[@class='product-price order-total']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderTotal)));
         } else {
-            return orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Sub-Total')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderSubTotal)))
+            areProductCostsCorrect =  orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Sub-Total')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderSubTotal)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Shipping')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderShippingCost)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Tax')]/parent::td/following-sibling::td//span[@class='product-price']")).getText().trim().equalsIgnoreCase(String.format("%.2f", tax)))
                     && orderFeesInfo.stream().anyMatch(e -> e.findElement(By.xpath("//span[contains(text(),'Total')]/parent::td/following-sibling::td//span[@class='product-price order-total']")).getText().trim().equalsIgnoreCase(String.format("%.2f", orderTotal)));
         }
+        if (areProductCostsCorrect) {
+            log.info("Product cost details are correctly displayed in Confirm Order step.");
+        } else {
+            log.error("Product cost details are NOT correctly displayed in Confirm Order step.");
+        }
+        return areProductCostsCorrect;
     }
 
     public boolean areConfirmOrderDetailsCorrect(Address billingAddress, Map<String, Object> shippingInfo, double tax, PaymentMethod paymentMethod, ShippingMethod shippingMethod, List<Product> products) {

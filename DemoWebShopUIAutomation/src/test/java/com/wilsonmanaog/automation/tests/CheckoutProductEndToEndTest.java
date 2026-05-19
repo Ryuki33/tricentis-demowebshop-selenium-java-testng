@@ -7,6 +7,7 @@ import com.wilsonmanaog.automation.model.*;
 import com.wilsonmanaog.automation.pages.*;
 import com.wilsonmanaog.automation.utils.GenericDataProvider;
 import com.wilsonmanaog.automation.utils.ProductMapper;
+import com.wilsonmanaog.automation.utils.RetryAnalyzer;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -16,17 +17,24 @@ import java.util.Map;
 
 public class CheckoutProductEndToEndTest extends BaseTest {
 
-    @BeforeMethod(groups = {"RegressionTests"})
-    public void login() {
+    @BeforeMethod(alwaysRun = true, groups = {"RegressionTests"})
+    public void loginAndEmptyShoppingCart() {
         //Go to Login Page
         LoginPage loginPage = homePage.getHeader().goToLoginPage();
 
         //Perform Login
         User user = new User(ConfigReader.get("email"), ConfigReader.get("password"));
         loginPage.login(user);
+
+        //Go to Shopping Cart
+        ShoppingCartPage shoppingCartPage = homePage.getHeader().goToShoppingCartPage();
+        shoppingCartPage.waitForPageToLoad();
+
+        //Remove products from cart if there is one
+        shoppingCartPage.removeAllProductsFromCart();
     }
 
-    @Test(groups = {"RegressionTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class)
+    @Test(groups = {"RegressionTests"}, dataProvider = "dataProvider", dataProviderClass = GenericDataProvider.class, retryAnalyzer = RetryAnalyzer.class)
     @DataSource("checkoutProducts.json")
     @SuppressWarnings("unchecked")
     public void checkoutProductTest(Map<String, Object> data) {
@@ -83,8 +91,16 @@ public class CheckoutProductEndToEndTest extends BaseTest {
         Assert.assertTrue(checkoutPage.isConfirmOrderSuccessful(), "Order confirmation failed. Expected order to be confirmed successfully.");
     }
 
-    @AfterMethod(groups = {"RegressionTests"})
-    public void logout() {
+    @AfterMethod(alwaysRun = true, groups = {"RegressionTests"})
+    public void removeProductsFromCartAndLogOut() {
+        //Go to Shopping Cart Page
+        ShoppingCartPage shoppingCartPage = homePage.getHeader().goToShoppingCartPage();
+        shoppingCartPage.waitForPageToLoad();
+
+        //Remove all products from cart
+        shoppingCartPage.removeAllProductsFromCart();
+
+        //Logout
         homePage.getHeader().logout();
     }
 }

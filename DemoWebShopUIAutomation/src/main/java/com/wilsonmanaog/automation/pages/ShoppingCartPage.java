@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ShoppingCartPage extends BasePage {
 
@@ -27,6 +28,9 @@ public class ShoppingCartPage extends BasePage {
 
     @FindBy(css="tr.cart-item-row")
     List<WebElement> productsInCart;
+
+    @FindBy(css="tr.cart-item-row input[name='removefromcart']")
+    List<WebElement> productsInCartCheckboxes;
 
     @FindBy(id="termsofservice")
     WebElement termsOfServiceCheckbox;
@@ -46,21 +50,45 @@ public class ShoppingCartPage extends BasePage {
 
     public boolean isProductAddedToCart(Product product) {
         log.info("Checking if product is added to cart: " + product.getName());
-        return productsInCart.stream()
-                .anyMatch(e -> e.findElement(By.cssSelector("td.product a")).getText().equalsIgnoreCase(product.getName()));
+        boolean isProductInCart = productsInCart.stream()
+                .anyMatch(e -> {
+                    try {
+                        return e.findElement(By.cssSelector("td.product a")).getText().trim().equalsIgnoreCase(product.getName());
+                    } catch (Exception ex) {
+                        return false;
+                    }
+                });
+        if (isProductInCart) {
+            log.info("Product is displayed in cart: " + product.getName());
+        } else {
+            log.error("Product is NOT displayed in cart: " + product.getName());
+        }
+        return isProductInCart;
     }
 
     public boolean areAllProductsAddedToCart(List<Product> products) {
         log.info("Checking if all products are added to cart...");
-         return products.stream()
+        return products.stream()
                 .allMatch(this::isProductAddedToCart);
     }
 
     public boolean isTotalPriceOfProductInCartCorrect(Product product) {
         log.info("Checking if total price of product in cart is correct for product: " + product.getName());
-        return productsInCart.stream()
+        boolean isTotalPriceCorrect = productsInCart.stream()
                 .filter(e -> e.findElement(By.cssSelector("td.product a")).getText().trim().equalsIgnoreCase(product.getName()))
-                .anyMatch(e -> e.findElement(By.cssSelector("td.subtotal.nobr.end span.product-subtotal")).getText().trim().equalsIgnoreCase(String.format("%.2f", product.getPrice() * product.getQuantity())));
+                .anyMatch(e -> {
+                    try {
+                        return e.findElement(By.cssSelector("td.subtotal.nobr.end span.product-subtotal")).getText().trim().equalsIgnoreCase(String.format("%.2f", product.getPrice() * product.getQuantity()));
+                    } catch (Exception ex) {
+                        return false;
+                    }
+                });
+        if (isTotalPriceCorrect) {
+            log.info("Total price of product in cart is correct for product: " + product.getName());
+        } else {
+            log.error("Total price of product in cart is NOT correct for product: " + product.getName());
+        }
+        return isTotalPriceCorrect;
     }
 
     public boolean areTotalPricesOfProductsInCartCorrect(List<Product> products) {
@@ -80,9 +108,19 @@ public class ShoppingCartPage extends BasePage {
         click(updateShoppingCartButton);
     }
 
-    public void removeAllProductsFromCart(List<Product> products) {
+    public void removeAllKnownProductsFromCart(List<Product> products) {
         log.info("Removing all products from cart...");
         products.forEach(this::removeProductFromCart);
+    }
+
+    public void removeAllProductsFromCart() {
+        log.info("Removing all products from cart...");
+        if (!isElementDisplayed(shoppingCartEmptyMessage)) {
+            productsInCartCheckboxes.forEach(WebElement::click);
+            click(updateShoppingCartButton);
+        } else {
+            log.info("Skipping this step as the Shopping Cart is empty!");
+        }
     }
 
     public CheckoutPage goToCheckoutPage() {
