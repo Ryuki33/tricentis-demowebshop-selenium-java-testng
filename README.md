@@ -24,6 +24,7 @@ This framework follows the Page Object Model (POM) design pattern and is designe
  - Test Reporting using Extent Reports
  - Screenshot capture on failures
  - Scalable project structure
+ - Utilizing Test Data driven approach
  - CI/CD integration with Github Actions and Jenkins
 
 <br><br>
@@ -99,10 +100,10 @@ Run all tests<br>
 mvn test
 
 Run using TestNG XML defined in pom.xml Profile<br>
-mvn test -P profile-name
+mvn test -P  &lt;profile-name&gt;
 
 Run specific test class<br>
-mvn test -Dtest=test-class-name
+mvn test -Dtest=&lt;test-class-name&gt;
 
 <br><br>
 **Logging**
@@ -139,7 +140,7 @@ This includes:
 
 Framework configuration can be modified inside src/main/resources/GlobalData.properties
 
-Proprties:
+Properties:
  - browser=chrome
  - baseUrl=https://demowebshop.tricentis.com
 
@@ -148,10 +149,13 @@ Proprties:
 - Explicit waits over Thread.sleep()
 - Reusable utility methods
 - Centralized driver management
+- Centralized test data
+- Test Data driven approach
 - Clean separation of concerns
 - Parameterized configuration
 - Maintainable locators
 - Logging and debugging support
+- Test Reporting and capturing screenshots during test failures
 
 <br><br>
 **Why This Framework?**<br>
