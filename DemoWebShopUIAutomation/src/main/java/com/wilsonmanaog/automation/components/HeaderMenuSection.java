@@ -6,6 +6,7 @@ import com.wilsonmanaog.automation.pages.RegisterUserPage;
 import com.wilsonmanaog.automation.pages.ShoppingCartPage;
 import com.wilsonmanaog.automation.utils.LogUtils;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -52,8 +53,16 @@ public class HeaderMenuSection extends BaseComponent {
 
     public ShoppingCartPage goToShoppingCartPage() {
         log.info("Clicking the shopping cart link in the header menu...");
-        click(shoppingCartLink);
-        return new ShoppingCartPage(driver);
+        int attempts = 0;
+        while (attempts < 3) {
+            try {
+                click(shoppingCartLink);
+                return new ShoppingCartPage(driver);
+            } catch (StaleElementReferenceException e) {
+                attempts++;
+            }
+        }
+        throw new RuntimeException("Element still stale after retries");
     }
 
     public boolean isLoginSuccessful(String userName) {
