@@ -19,11 +19,11 @@ public class ElementActions {
     }
 
     public void waitElementToBeVisible(WebElement element) {
-        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
     }
 
     public void waitElementToBeClickable(WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+        wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
     }
 
     public void click(WebElement element) {
